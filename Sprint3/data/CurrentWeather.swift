@@ -1,8 +1,8 @@
 import Foundation
 
-struct WeatherResponse: Codable {
+struct CurrentWeatherResponse: Codable {
     let current: CurrentWeather
-    let daily: DailyWeather
+    let daily: CurrentDayWeather
 }
 
 struct CurrentWeather: Codable {
@@ -13,7 +13,7 @@ struct CurrentWeather: Codable {
     let snowfall: Double
 }
 
-struct DailyWeather: Codable {
+struct CurrentDayWeather: Codable {
     let temperature_2m_max: [Double]
     let temperature_2m_min: [Double]
     let sunrise: [String]

@@ -42,7 +42,7 @@ struct WeatherDetailView: View {
         .padding()
         .navigationTitle("\(date)")
         .onAppear {
-            viewModel.fetchDetailedWeather()
+            viewModel.fetchDetailedWeather(date: date)
         }
         Spacer()
     }

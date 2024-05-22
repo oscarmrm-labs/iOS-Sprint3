@@ -1,70 +1,65 @@
 import Foundation
+import Alamofire
 
 class WeatherViewModel: ObservableObject {
     let latitude = "40.41"
     let longitude = "-3.70"
+    let forecastDays = "1"
     
     @Published var currentWeather: CurrentWeatherResponse?
     @Published var weather: WeatherResponse?
+    @Published var loading = true
+    
+    private let group = DispatchGroup()
 
     func fetchCurrentWeather() {
-        let urlString = "https://api.open-meteo.com/v1/forecast?latitude=\(latitude)&longitude=\(longitude)&current=temperature_2m,is_day,rain,showers,snowfall&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset&forecast_days=1"
-        guard let url = URL(string: urlString) else {
-            print("URL inválida.")
-            return
-        }
-
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
-            if let error = error {
-                print("Error en la solicitud: \(error.localizedDescription)")
-                return
-            }
-
-            guard let data = data else {
-                print("Datos no válidos.")
-                return
-            }
-
-            do {
-                let weatherResponse = try JSONDecoder().decode(CurrentWeatherResponse.self, from: data)
-                DispatchQueue.main.async {
-                    self.currentWeather = weatherResponse
-                }
+        group.enter()
+        let urlString = "https://api.open-meteo.com/v1/forecast?latitude=\(latitude)&longitude=\(longitude)&current=temperature_2m,is_day,rain,showers,snowfall&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset&forecast_days=\(forecastDays)"
+        Alamofire.request(urlString, method: .get, parameters: nil, encoding: URLEncoding.default).responseJSON { response in
+            switch response.result {
+            case .success(let data):
+            do{
+                let jsonData = try JSONSerialization.data(withJSONObject: data, options: [])
+                self.currentWeather = try JSONDecoder().decode(CurrentWeatherResponse.self, from: jsonData)
             } catch {
-                print("Error al decodificar la respuesta: \(error.localizedDescription)")
-            }
+                print(error.localizedDescription)
+             }
+           case .failure(let error):
+             print(error.localizedDescription)
+           }
         }
-        task.resume()
+        group.leave()
     }
     
     func fetchWeather() {
-        let urlString = "https://api.open-meteo.com/v1/forecast?latitude=\(latitude)&longitude=\(longitude)&daily=temperature_2m_max,temperature_2m_min,rain_sum,showers_sum,snowfall_sum&forecast_days=7&timezone=auto"
-        guard let url = URL(string: urlString) else {
-            print("URL inválida.")
-            return
-        }
-
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
-            if let error = error {
-                print("Error en la solicitud: \(error.localizedDescription)")
-                return
-            }
-
-            guard let data = data else {
-                print("Datos no válidos.")
-                return
-            }
-
-            do {
-                print("Datos recibidos: \(String(data: data, encoding: .utf8) ?? "No se pudo convertir los datos a String")")
-                let weatherResponse = try JSONDecoder().decode(WeatherResponse.self, from: data)
-                DispatchQueue.main.async {
-                    self.weather = weatherResponse
-                }
+        group.enter()
+        let urlString = "https://api.open-meteo.com/v1/forecast?latitude=\(latitude)&longitude=\(longitude)&daily=temperature_2m_max,temperature_2m_min,rain_sum,showers_sum,snowfall_sum"
+        Alamofire.request(urlString, method: .get, parameters: nil, encoding: URLEncoding.default).responseJSON { response in
+            switch response.result {
+            case .success(let data):
+            do{
+                let jsonData = try JSONSerialization.data(withJSONObject: data, options: [])
+                self.weather = try JSONDecoder().decode(WeatherResponse.self, from: jsonData)
             } catch {
-                print("Error al decodificar la respuesta: \(error.localizedDescription)")
-            }
+                print(error.localizedDescription)
+             }
+           case .failure(let error):
+             print(error.localizedDescription)
+           }
         }
-        task.resume()
+        group.leave()
     }
+    
+    func fetchData() {
+        loading = true
+        fetchCurrentWeather()
+        fetchWeather()
+        
+        group.notify(queue: .main) {
+            self.loading = false
+            print("LOADING ... \(self.loading)")
+        }
+        
+    }
+    
 }

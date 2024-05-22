@@ -79,12 +79,9 @@
 		5520976E2BF8C91A00169D09 /* Sprint3 */ = {
 			isa = PBXGroup;
 			children = (
-				55623ABC2BFB30A400061D12 /* data */,
+				55D7A35D2BFD022900E81D6F /* main */,
+				55D7A35C2BFD021B00E81D6F /* detail */,
 				5520976F2BF8C91A00169D09 /* Sprint3App.swift */,
-				552097712BF8C91A00169D09 /* ContentView.swift */,
-				55623ABA2BFB2BF400061D12 /* MainViewModel.swift */,
-				55623ABF2BFB3B3400061D12 /* DetailView.swift */,
-				55623AC32BFB3C8700061D12 /* DetailViewModel.swift */,
 				552097732BF8C91A00169D09 /* Assets.xcassets */,
 				552097752BF8C91A00169D09 /* Preview Content */,
 			);
@@ -99,14 +96,57 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		55623ABC2BFB30A400061D12 /* data */ = {
+		55D7A35C2BFD021B00E81D6F /* detail */ = {
+			isa = PBXGroup;
+			children = (
+				55D7A3612BFD024B00E81D6F /* ui */,
+				55D7A3602BFD024500E81D6F /* data */,
+			);
+			path = detail;
+			sourceTree = "<group>";
+		};
+		55D7A35D2BFD022900E81D6F /* main */ = {
+			isa = PBXGroup;
+			children = (
+				55D7A35F2BFD023C00E81D6F /* ui */,
+				55D7A35E2BFD023300E81D6F /* data */,
+			);
+			path = main;
+			sourceTree = "<group>";
+		};
+		55D7A35E2BFD023300E81D6F /* data */ = {
 			isa = PBXGroup;
 			children = (
 				55623AB82BFB2BCB00061D12 /* CurrentWeather.swift */,
 				55623ABD2BFB30E900061D12 /* ForecastWeather.swift */,
+			);
+			path = data;
+			sourceTree = "<group>";
+		};
+		55D7A35F2BFD023C00E81D6F /* ui */ = {
+			isa = PBXGroup;
+			children = (
+				552097712BF8C91A00169D09 /* ContentView.swift */,
+				55623ABA2BFB2BF400061D12 /* MainViewModel.swift */,
+			);
+			path = ui;
+			sourceTree = "<group>";
+		};
+		55D7A3602BFD024500E81D6F /* data */ = {
+			isa = PBXGroup;
+			children = (
 				55623AC12BFB3C6300061D12 /* DeatailWeather.swift */,
 			);
 			path = data;
+			sourceTree = "<group>";
+		};
+		55D7A3612BFD024B00E81D6F /* ui */ = {
+			isa = PBXGroup;
+			children = (
+				55623ABF2BFB3B3400061D12 /* DetailView.swift */,
+				55623AC32BFB3C8700061D12 /* DetailViewModel.swift */,
+			);
+			path = ui;
 			sourceTree = "<group>";
 		};
 		6E020107012402DEC75DA078 /* Frameworks */ = {

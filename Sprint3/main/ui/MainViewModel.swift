@@ -21,14 +21,17 @@ class WeatherViewModel: ObservableObject {
             do{
                 let jsonData = try JSONSerialization.data(withJSONObject: data, options: [])
                 self.currentWeather = try JSONDecoder().decode(CurrentWeatherResponse.self, from: jsonData)
+                self.group.leave()
             } catch {
                 print(error.localizedDescription)
+                self.group.leave()
              }
-           case .failure(let error):
-             print(error.localizedDescription)
+            case .failure(let error):
+                print(error.localizedDescription)
+                self.group.leave()
            }
         }
-        group.leave()
+        //group.leave()
     }
     
     func fetchWeather() {
@@ -40,14 +43,16 @@ class WeatherViewModel: ObservableObject {
             do{
                 let jsonData = try JSONSerialization.data(withJSONObject: data, options: [])
                 self.weather = try JSONDecoder().decode(WeatherResponse.self, from: jsonData)
+                self.group.leave()
             } catch {
                 print(error.localizedDescription)
-             }
-           case .failure(let error):
-             print(error.localizedDescription)
+            }
+            case .failure(let error):
+                print(error.localizedDescription)
+                self.group.leave()
            }
         }
-        group.leave()
+        //group.leave()
     }
     
     func fetchData() {
@@ -57,7 +62,6 @@ class WeatherViewModel: ObservableObject {
         
         group.notify(queue: .main) {
             self.loading = false
-            print("LOADING ... \(self.loading)")
         }
         
     }

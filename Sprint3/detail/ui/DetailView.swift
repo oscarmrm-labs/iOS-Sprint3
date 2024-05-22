@@ -8,6 +8,9 @@ struct WeatherDetailView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
+            if viewModel.loading == true {
+                ProgressView()
+            }
             if let detailedWeather = viewModel.detailWeatherResponse {
                 HStack {
                     Text("Max. Temp: \(detailedWeather.daily.temperature_2m_max.first ?? 0.0, specifier: formato)°")
@@ -35,9 +38,7 @@ struct WeatherDetailView: View {
                     Spacer()
                     Text("Nevadas: \(detailedWeather.daily.snowfall_sum.first ?? 0.0, specifier: formato) cm")
                 }
-            } else {
-                Text("Loading...")
-            }
+            } 
         }
         .padding()
         .navigationTitle("\(date)")

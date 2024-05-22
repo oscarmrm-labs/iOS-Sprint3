@@ -23,9 +23,7 @@ struct ContentView: View {
                         Text("\(currentWeather.daily.sunrise.first ?? "")")
                         Text("\(currentWeather.daily.sunset.first ?? "")")
                     }
-                } else {
-                    Text("Loading...")
-                }
+                } 
                 VStack {
                     if let weather = viewModel.weather {
                         ForEach(0..<weather.daily.time.count, id: \.self) { day in
@@ -44,8 +42,6 @@ struct ContentView: View {
                                     }
                                 }
                         }
-                    } else {
-                        Text("Loading...")
                     }
                 }
                 .padding()
